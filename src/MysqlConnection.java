@@ -11,18 +11,28 @@ public class MysqlConnection {
 	public Connection connection = null;
 	public Statement statement = null;
 	public ResultSet result;
-	MysqlConnection() throws SQLException
+	
+	
+	protected void delay(int delay) throws InterruptedException
+	{
+		for(int time = 0 ; time < delay ; time++)
+			for(int count = 0; count < time ; count++)
+			{}
+	}
+	MysqlConnection() throws SQLException, InterruptedException
 	{
 		try {
-				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/employeedatabase" + "?autoReconnect=true&useSSL=false","root","Aspire@123");
+				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/faculty" + "?autoReconnect=true&useSSL=false","root","Qazwsxedc123");
 		}
 		catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
 		finally{
+			
 			if(connection == null)
 			{
+				delay(1000);
 				connection.close();
 			}
 			System.out.println("Connected to Database ");

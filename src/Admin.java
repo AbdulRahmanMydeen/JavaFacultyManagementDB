@@ -2,7 +2,7 @@ import java.sql.SQLException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public class Admin extends Employee implements Validation {
+public class Admin extends Faculty implements Validation {
 
 	private String confirmationPassword;
 	private String defaultPassword ;
@@ -10,7 +10,7 @@ public class Admin extends Employee implements Validation {
 	static private int totalNumber;
 	private int numberOfEmployee;
 	
-	Admin() throws SQLException
+	Admin() throws SQLException, InterruptedException
 	{
 		super();
 		totalNumber = 0;
@@ -19,7 +19,7 @@ public class Admin extends Employee implements Validation {
 	}
 	
 	private void deleteQuery(int id) {
-		query = "delete from employee where EmployeeID = " + id + ";"; 
+		query = "delete from FacultyDetails where IdNumber = " + id + ";"; 
 		try
 		{
 			statement = connection.createStatement();
@@ -31,9 +31,9 @@ public class Admin extends Employee implements Validation {
 		}
 	}
 		
-	private void insertQuery(int id , String firstName , String lastName , long mobileNumber , int age , char gender , String designation , String emailId , String username , String password)    
+	private void insertQuery(int id , String firstName , String lastName , long mobileNumber , int age , char gender , String qualification , String emailId , String username , String password)    
 	{
-		query = "INSERT INTO EMPLOYEE VALUES(" + id + ",'" + firstName + "','" + lastName + "'," + mobileNumber + "," + age + ",'" + gender + "','" + designation + "','" +emailId + "','" +username + "','" + password + "');";
+		query = "INSERT INTO FACULTYDETAILS VALUES(" + id + ",'" + firstName + "','" + lastName + "'," + mobileNumber + "," + age + ",'" + gender + "','" + qualification + "','" +emailId + "','" +username + "','" + password + "');";
 		updateQuery();
 	}
 	
@@ -41,10 +41,10 @@ public class Admin extends Employee implements Validation {
 	{
 		try {
 			System.out.print("\n");
-			System.out.println("Employee ID: " + result.getString("EmployeeId") + "\nEmployee FirstName: " + result.getString("EmployeeFirstName") );
-			System.out.println("Employee LastName: " + result.getString("EmployeeLastName") + "\nMobileNumber: " + result.getString("MobileNumber") );
-			System.out.println("Age: " + result.getString("Age") + "\nGender:" + result.getString("Gender") + "\nDesignation: " + result.getString("Designation") );
-			System.out.println("Email ID: " + result.getString("mailID"));
+			System.out.println("Faculty ID: " + result.getString("IdNumber") + "\nFirstName: " + result.getString("FacultyFirstName") );
+			System.out.println("LastName: " + result.getString("LastName") + "\nMobileNumber: " + result.getString("MobileNumber") );
+			System.out.println("Age: " + result.getString("Age") + "\nGender:" + result.getString("Gender") + "\nqualification: " + result.getString("qualification") );
+			System.out.println("Email ID: " + result.getString("EmailId"));
 			System.out.println("Username: " + result.getString("Username") + "\nPassword: " + result.getString("password"));
 			System.out.print("\n");
 		} 
@@ -56,7 +56,7 @@ public class Admin extends Employee implements Validation {
 	
 	private void selectDetails(int id)
 	{
-		query = "SELECT * FROM employee Where employeeid = " + id + ";";
+		query = "SELECT * FROM FacultyDetails Where IdNumber = " + id + ";";
 		try {
 			statement = connection.createStatement();
 			result = statement.executeQuery(query);
@@ -90,38 +90,38 @@ public class Admin extends Employee implements Validation {
 
 	private void updateQuery(int id , String username , String mailId)
 	{
-		query = "UPDATE EMPLOYEE SET mailID = '"+ mailId + "', username = '" + username + "' WHERE employeeId =" + id + ");";
+		query = "UPDATE FACULTYDETAILS SET emailId = '"+ mailId + "', username = '" + username + "' WHERE IdNumber =" + id + ");";
 		updateQuery();
 	}
 	
 	private void updateQuery(int id , long mobileNumber)
 	{
-		query = "UPDATE EMPLOYEE SET mobilenumber = "+ mobileNumber +" WHERE employeeId =" + id ;
+		query = "UPDATE FACULTYDETAILS SET mobilenumber = "+ mobileNumber +" WHERE IdNumber =" + id ;
 		updateQuery();
 	}
 
 	private void updateQuery(int id , int age)
 	{
-		query = "UPDATE EMPLOYEE SET age = "+ age +" WHERE employeeId =" + id + ";";
+		query = "UPDATE FACULTYDETAILS SET age = "+ age +" WHERE IdNumber =" + id + ";";
 		updateQuery();
 	}
 	
 	private void updateQuery(int id , char gender)
 	{
-		query = "UPDATE EMPLOYEE SET gender = '"+ gender +"' WHERE employeeId =" + id + ";";
+		query = "UPDATE FACULTYDETAILS SET gender = '"+ gender +"' WHERE IdNumber =" + id + ";";
 		updateQuery();
 	}
 
 
-	private void updateQuery(int id , String designation)
+	private void updateQuery(int id , String qualification)
 	{
-		query = "UPDATE EMPLOYEE SET Designation = '"+ designation +"' WHERE employeeId =" + id + ";";
+		query = "UPDATE FACULTYDETAILS SET qualification = '"+ qualification +"' WHERE IdNumber =" + id + ";";
 		updateQuery();	
 		}
 	
 	private void updateQuery(String username , String password)
 	{
-		query = "UPDATE EMPLOYEE SET password = '"+ password +"' WHERE username =" + username + ";";
+		query = "UPDATE FACULTYDETAILS SET password = '"+ password +"' WHERE username =" + username + ";";
 		updateQuery();
 	}
 
@@ -130,12 +130,12 @@ public class Admin extends Employee implements Validation {
 		boolean error = false;
 		while(!error)	{
 			try{
-				employeeId = scanner.nextInt();
-				if(employeeId == '\0')
+				facultyId = scanner.nextInt();
+				if(facultyId == '\0')
 				{
 					System.out.println("Enter the employee id:");
 				}
-				if(employeeId == 0)
+				if(facultyId == 0)
 				{
 					return error;
 				}
@@ -154,20 +154,20 @@ public class Admin extends Employee implements Validation {
 	public boolean validateFirstName()
 	{
 			 boolean error = false ;
-			 employeeFirstName = scanner.next();
-			 if(employeeFirstName.equals("r") || employeeFirstName.equals("R"))
+			 facultyFirstName = scanner.next();
+			 if(facultyFirstName.equals("r") || facultyFirstName.equals("R"))
 			 {
 				 error = true;
 				 return error;
 			 }
 			 			
-			 char[] firstName = new char[employeeFirstName.length()];
-			 for(int index = 0 ;index < employeeFirstName.length(); index++)
+			 char[] firstName = new char[facultyFirstName.length()];
+			 for(int index = 0 ;index < facultyFirstName.length(); index++)
 			 {
-				 firstName[index] = employeeFirstName.charAt(index);
+				 firstName[index] = facultyFirstName.charAt(index);
 			 }
 
-			 for(int index = 0 ;index < employeeFirstName.length(); index++)
+			 for(int index = 0 ;index < facultyFirstName.length(); index++)
 			 {
 				 if(!((firstName[index] >=65 && firstName[index] <= 90) || (firstName[index] >=97 && firstName[index] <= 122)))
 				 {
@@ -188,22 +188,22 @@ public class Admin extends Employee implements Validation {
 	{		 
 		 boolean error = false ;
 
-			 employeeLastName = scanner.next();
+			 facultyLastName = scanner.next();
 			 
-			 if(employeeLastName.equals("r") || employeeLastName.equals("R"))
+			 if(facultyLastName.equals("r") || facultyLastName.equals("R"))
 			 {
 				 error = true;
 				 return error;
 			 }
 			 
-			 char[] lastName = new char[employeeLastName.length()];
+			 char[] lastName = new char[facultyLastName.length()];
 			 
-			 for(int index = 0 ;index < employeeLastName.length(); index++)
+			 for(int index = 0 ;index < facultyLastName.length(); index++)
 			 {
-				 lastName[index] = employeeLastName.charAt(index);				 
+				 lastName[index] = facultyLastName.charAt(index);				 
 			 }
 			 
-			 for(int index = 0 ;index < employeeLastName.length(); index++)
+			 for(int index = 0 ;index < facultyLastName.length(); index++)
 			 {
 				 if(!((lastName[index] >=65 && lastName[index] <= 90) || (lastName[index] >=97 && lastName[index] <= 122)))
 				 {
@@ -256,9 +256,77 @@ public class Admin extends Employee implements Validation {
 		return error;
 	}
 	
-	public boolean validateDesignation()
+	private void qualification()
+	{
+		System.out.println("1.Chemical Engineering\n" + 
+				"\n" + 
+				"2.Process Control and Instrumentation Engineering\n" + 
+				"\n" + 
+				"3.Computer Science and Engineering\n" + 
+				"\n" + 
+				"4.Software Engineering\n" + 
+				"\n" + 
+				"5.Electrical Engineering\n" + 
+				"\n" + 
+				"6.Power Systems Engineering\n" + 
+				"\n" + 
+				"7.Mechanical Engineering\n" + 
+				"\n" + 
+				"8.Thermal Engineering\n" + 
+				"\n" + 
+				"9.Electronics and Communication Engineering\n" + 
+				"\n" + 
+				"10.VLSI System Design");
+		int option = scanner.nextInt();
+		switch(option)
+		{
+		case 1:
+			qualification = qualification + " in " + "Chemical Engineering";
+			break;
+		
+		case 2:
+			qualification = qualification + " in " + "Process Control and Instrumentation Engineering";
+			break;
+			
+		case 3:
+			qualification = qualification + " in " + "Computer Science and Engineering";
+			break;
+		
+		case 4:
+			qualification = qualification + " in " + "Software Engineering";
+			break;
+			
+		case 5:
+			qualification = qualification + " in " + "Electrical Engineering";
+			break;
+		
+		case 6:
+			qualification = qualification + " in " + "Power Systems Engineering";
+			break;
+			
+		case 7:
+			qualification = qualification + " in " + "Mechanical Engineering";
+			break;
+		
+		case 8:
+			qualification = qualification + " in " + "Thermal Engineering";
+			break;	
+
+		case 9:
+			qualification = qualification + " in " + "Electronics and Communication Engineering";
+			break;
+		
+		case 10:
+			qualification = qualification + " in " + "VLSI System Design";
+			break;	
+
+		}
+	}
+	
+	public boolean validateQualification()
 	{
 		boolean error = false;
+		String eQualification ;
 		while(!error)
 		{
 			try {
@@ -272,28 +340,25 @@ public class Admin extends Employee implements Validation {
 		switch(option)
 		{
 			case 1:
-				employeeDesignation = "Retail";
+				qualification = "M.E";
+				qualification();
 				break;
 				
 			case 2:
-				employeeDesignation = "Testing";
+				qualification = "M.Tech";
+				qualification();
 				break;
 				
 			case 3:
-				employeeDesignation = "Developer";
+				qualification = "Ph.D";
+				System.out.println("Please Type your qualification in specfic");
+				eQualification = scanner.nextLine();
+				qualification = qualification + " in " + eQualification; 
 				break;
-			
-			case 4:
-				employeeDesignation = "Intern";
-				break;
-				
-			case 5:
-				employeeDesignation = "Admin";
-				break;
-			
+
 			default:
 				System.out.println("Invalid option!");
-				validateDesignation();
+				validateQualification();
 				break;
 			}
 			error = true;
@@ -365,36 +430,36 @@ public class Admin extends Employee implements Validation {
 	private void validateUsername()
 	{
 
-		 if(employeeLastName.length() < 5 && employeeFirstName.length() < 5)
+		 if(facultyLastName.length() < 5 && facultyFirstName.length() < 5)
 		 {
-			 username = employeeLastName  + employeeFirstName + Integer.toString(employeeId);
-			 System.out.println("Employee Username: " + username); 
+			 username = facultyLastName  + facultyFirstName + Integer.toString(facultyId);
+			 System.out.println("Username: " + username); 
 		 }
 		 
-		 else if(employeeLastName.length() < 5)
+		 else if(facultyLastName.length() < 5)
 		{
-			 username = employeeFirstName + Integer.toString(employeeId);
-			 System.out.println("Employee Username: " + username);
+			 username = facultyFirstName + Integer.toString(facultyId);
+			 System.out.println("Username: " + username);
 		}
 		 
 		else {
-			username = employeeLastName + Integer.toString(employeeId);
-			System.out.println("Employee Username: " + username);
+			username = facultyLastName + Integer.toString(facultyId);
+			System.out.println("Username: " + username);
 		}
 	}
 	
-	private void searchEmployeeDetails()
+	private void searchFacultyDetails()
 	{
 		int searchId = 0;
-		System.out.println("Enter the Employee ID to be searched:");
+		System.out.println("Enter the ID number to be searched:");
 		searchId = scanner.nextInt();
 		selectDetails(searchId);
 	}
 
-	private void deleteEmployeeDetails()
+	private void deleteFacultyDetails()
 	{
 		try {
-			query = "SELECT * FROM employee;";
+			query = "SELECT * FROM FACULTYDETAILS;";
 			statement = connection.createStatement();
 			result  = statement.executeQuery(query);
 			if(result.next() == false)
@@ -403,7 +468,7 @@ public class Admin extends Employee implements Validation {
 				int searchId = 0;
 				System.out.println("Enter the Employee ID to be deleted:");
 				searchId = scanner.nextInt();
-				query = "SELECT EmployeeId FROM employee WHERE employeeId = " + searchId;
+				query = "SELECT IdNumber FROM FACULTYDETAILS WHERE IdNumber = " + searchId;
 		        result = statement.executeQuery(query);	
 		        if(result.next() == false) {
 		        	System.out.println("No records are found for the entered EmployeeId");
@@ -419,44 +484,44 @@ public class Admin extends Employee implements Validation {
 		}
 	}
 
-	private void getEmployeeDetails()
+	private void getFacultyDetails()
 	{
-		 System.out.print("Enter the employee ID             :"); 
+		 System.out.print("Enter the ID             :"); 
 		 validateId();
 		 
-		 System.out.print("Enter the employee First name     :");
+		 System.out.print("Enter the First name     :");
 		 validateFirstName();
 		 
-		 System.out.print("Enter the employee Last name      :");
+		 System.out.print("Enter the Last name      :");
 		 validateLastName();
 		 
-		 System.out.print("Enter the employee Mobile Number  :");
+		 System.out.print("Enter the Mobile Number  :");
 		 validateMobileNumber();
 		 
-		 System.out.print("Enter the employee Age            :");
+		 System.out.print("Enter the Age            :");
 		 validateAge();
 		 
 		 System.out.print("\n1.Male \n2.Female");
 		 System.out.print("\nenter the option                   :");
 		 validateGender();
 		 
-		 System.out.println("\nSelect the Designation : \n1.Retail \n2.Testing \n3.Developer \n4.Intern \n5.Admin");
-		 validateDesignation();
+		 System.out.println("\nSelect the qualification : \n1.M.E \n2.M.Tech \n3.Ph.D");
+		 validateQualification();
 		  
 		 validateUsername();
 		 
-		 mailId = employeeLastName + "." + employeeFirstName + "@attention.in" ;
-		 System.out.println("Employee MailID: " + mailId);
-		 if(employeeDesignation == "admin") {
-			 System.out.println("Employee Default Password: " + defaultAdminPassword);
+		 mailId = facultyLastName + "." + facultyFirstName + "@attention.in" ;
+		 System.out.println("MailID: " + mailId);
+		 if(qualification == "admin") {
+			 System.out.println("Default Password: " + defaultAdminPassword);
 			 password = defaultPassword ;
 		 }
 		 else {
-		 System.out.println("Employee Default Password: " + "password123");
+		 System.out.println("Default Password: " + "password123");
 		 password = defaultPassword;
 		 }
 		 
-		 insertQuery(employeeId , employeeFirstName , employeeLastName , mobileNumber , age , gender, employeeDesignation , mailId , username , password);
+		 insertQuery(facultyId , facultyFirstName , facultyLastName , mobileNumber , age , gender, qualification , mailId , username , password);
 		 System.out.println("Successfully Inserted!");
 		 
 
@@ -471,7 +536,7 @@ public class Admin extends Employee implements Validation {
 	private void displayDetails()
 	{
 		try {
-			query = "SELECT * FROM employee;";
+			query = "SELECT * FROM FACULTYDETAILS;";
 			statement = connection.createStatement();
 			result  = statement.executeQuery(query);
 			if(result == null)
@@ -487,10 +552,10 @@ public class Admin extends Employee implements Validation {
 		}
 	}
 	
-	private void updateEmployeeDetails()
+	private void updateFacultyDetails()
 	{
 		try {
-			query = "SELECT * FROM employee;";
+			query = "SELECT * FROM FACULTYDETAILS;";
 			statement = connection.createStatement();
 			result  = statement.executeQuery(query);
 			if(result == null) {
@@ -501,25 +566,25 @@ public class Admin extends Employee implements Validation {
 				System.out.print("Enter the employee id to be updated:");
 		        int id = scanner.nextInt();
 		        
-		        query = "SELECT EmployeeId FROM employee WHERE employeeId = " + id;
+		        query = "SELECT IdNumber FROM FACULTYDETAILS WHERE IdNumber = " + id;
 		        result = statement.executeQuery(query);	
 		        if(result == null) {
 		        	System.out.println("No records are found for the entered EmployeeId");
 		        	return;
 		        }
 		        else {
-			    System.out.print("Enter the employee First name");
+			    System.out.print("Enter the First name");
 			    System.out.print(" (OR Enter R to restore the previous data)     :");
 				if(validateFirstName() == false) {
-					query = "UPDATE EMPLOYEE SET EmployeeFirstName = '"+ employeeFirstName + "' WHERE employeeId =" + id + "";
+					query = "UPDATE FACULTYDETAILS SET FirstName = '"+ facultyFirstName + "' WHERE IdNumber =" + id + "";
 					updateQuery();	
 				}
 				
-				System.out.print("Enter the employee Last name");
+				System.out.print("Enter the Last name");
 			    System.out.print(" (OR Enter R to restore the previous data)     :");
 				if(validateLastName() == false)
 				{
-					query = "UPDATE EMPLOYEE SET EmployeeLastName = '"+ employeeLastName + "' WHERE employeeId =" + id + "";
+					query = "UPDATE FACULTYDETAILS SET LastName = '"+ facultyLastName + "' WHERE IdNumber =" + id + "";
 					updateQuery();
 				}
 				
@@ -534,7 +599,7 @@ public class Admin extends Employee implements Validation {
 					updateQuery(id,mobileNumber);
 				}
 			    
-			    System.out.print("Enter the employee Age");
+			    System.out.print("Enter the Age");
 			    System.out.print(" (OR Enter 0 to restore the previous data)     :");
 			    if(validateAge() == true)
 			    {
@@ -549,13 +614,12 @@ public class Admin extends Employee implements Validation {
 					updateQuery(id,mobileNumber);
 				}
 			    
-			    System.out.println("\n1.Retail \n2.Testing \n3.Developer \n4.Intern \n5.Admin");
-			    System.out.print("Select the Designation (Or Enter 0 to restore the previous value:)");
-			    if(validateDesignation() == true)
+			    System.out.println("\n1.M.E \n2.M.Tech \n3.Ph.D");
+			    System.out.print("Select the qualification (Or Enter 0 to restore the previous value:)");
+			    if(validateQualification() == true)
 			    {
-					updateQuery(id,employeeDesignation);
+					updateQuery(id,qualification);
 				}
-			     
 	    	     } 
 			}
 	      }
@@ -575,10 +639,10 @@ public class Admin extends Employee implements Validation {
 		 option = scanner.nextInt();
 		 if (option == 1)
 		 {
-			 System.out.println("How many employee details do you want to enter?:");
+			 System.out.println("How many faculty details do you want to enter?:");
 			 numberOfEmployee = scanner.nextInt();
 			 for(int index = 0; index < numberOfEmployee; index++)
-				 getEmployeeDetails();
+				 getFacultyDetails();
 			 System.out.println("\n");
 			 totalNumber += numberOfEmployee;
 			 manageAdmin();
@@ -590,18 +654,18 @@ public class Admin extends Employee implements Validation {
 		 }
 		 else if(option == 3)
 		 {
-		        searchEmployeeDetails();
+		        searchFacultyDetails();
 		        manageAdmin();
 		 }
 		 else if(option == 4)
 		 {
-		        updateEmployeeDetails();
+		        updateFacultyDetails();
 		        manageAdmin();
 		     
 		 }
 		 else if(option == 5)
 		 {
-		        deleteEmployeeDetails();
+		        deleteFacultyDetails();
 		        manageAdmin();
 		 }
 		 else if(option == 6)
@@ -646,7 +710,7 @@ public class Admin extends Employee implements Validation {
 	}
 	}
  
-final protected void manageEmployee(int id)
+final protected void manageFaculty(int id)
 {
 	 int option = 0 ;
 	 System.out.println("\n1.View Profile \n2.Search your co-workers \n3.Logout \nPress any number to exit");
@@ -655,20 +719,20 @@ final protected void manageEmployee(int id)
 	 {
 		 selectDetails(id);
 		 System.out.println("\n\n");
-		 manageEmployee(id);
+		 manageFaculty(id);
 	 }
 	 else if(option == 2)
 	 {
 		 String name = scanner.next();
 		 selectDetails(name);
-		 manageEmployee(id);
+		 manageFaculty(id);
 	 }
 	 else if(option == 3)
 	 {
 		 enableMenu();
 	 }	
 	 else {
-		 manageEmployee(id);
+		 manageFaculty(id);
 	 }
 }
 	
@@ -680,7 +744,7 @@ final protected void manageEmployee(int id)
 				username = scanner.next();
 				System.out.print("Password :");
 				password = scanner.next();
-				query = "SELECT password , designation , employeefirstname ,employeeId FROM employee WHERE username = '" + username + "';";
+				query = "SELECT password , qualification ,FacultyFirstName, IdNumber FROM FacultyDetails WHERE username = '" + username + "';";
 				statement = connection.createStatement();
 				result  = statement.executeQuery(query);
 				if(result == null)
@@ -690,28 +754,28 @@ final protected void manageEmployee(int id)
 				}
 						while(result.next()) {
 							confirmationPassword = result.getString("password");
-							employeeDesignation = result.getString("Designation");
-							employeeFirstName = result.getString("employeeFirstName");
-							employeeId = result.getInt("employeeId");
+							qualification = result.getString("qualification");
+							facultyFirstName = result.getString("FacultyFirstName");
+							facultyId = result.getInt("IdNumber");
 								}
 						
 								if(password.equals("Admin@123") && username.equals("Admin@123"))
 								{
 									System.out.println("Login successful!");
-									System.out.println("You logged in as Default User.\nAdd your detail to the database");
-									manageAdmin();	
+									System.out.println("You logged in as Admin User.");
+									manageAdmin();
 								}
 								else if(password.equals(confirmationPassword))
 								{
 									System.out.println("Login successful!");
-							        if(employeeDesignation.equals("Admin")) {
-							        	System.out.println("Welcome " + employeeFirstName);
+							        if(qualification.equals("Admin")) {
+							        	System.out.println("Welcome " + facultyFirstName);
 							        	manageAdmin();	
 							        }
 							         else
 							         {
-							        	 System.out.print("\nWelcome " + employeeFirstName);
-							        	 manageEmployee(employeeId);
+							        	 System.out.print("\nWelcome " + facultyFirstName);
+							        	 manageFaculty(facultyId);
 							         }
 								}
 				

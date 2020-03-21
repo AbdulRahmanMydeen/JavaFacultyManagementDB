@@ -6,5 +6,5 @@ public interface Validation {
 	public boolean validateMobileNumber();
 	public boolean validateAge();
 	public boolean validateGender();
-	public boolean validateDesignation();
+	public boolean validateQualification();
 }
